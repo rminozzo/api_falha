@@ -2,7 +2,7 @@ const express = require ("express");
 var cors = require('cors');
 //const db = require ('./models/db');
 
-const Cidade = require('./models/Cidade');
+const Clientes = require('./models/Cidade');
 
 const app = express();
 
@@ -16,11 +16,14 @@ app.use((req, res, next) => {
     next();
 });
 
-//CADASTRA CIDADE
-app.post("/cidade", async (req, res) => {
-    const { nome, status } = req.body;   
 
-    await Cidade.create(req.body).
+//CADASTRA CIDADE
+app.post("/clientes", async (req, res) => {
+    const {
+        owner, cnpj, asnumber, ipv4,ipv6, aspath
+    } = req.body
+
+    await Clientes.create(req.body).
     then(() => {
         return res.json({
             erro: false,
@@ -36,16 +39,15 @@ app.post("/cidade", async (req, res) => {
 
 
 //Listar
-app.get("/cidades", async (req, res) => {
+app.get("/clientes", async (req, res) => {
 
-    await Cidade.findAll({
-          attributes: ['id','nome', 'status']
+    await Clientes.findAll({
+          attributes: ['id','asnumber']
           //order: [['name', 'ASC']]
     })
-    .then((cidades) => {
+    .then((clientes) => {
         return res.json({
-            
-            cidades
+            clientes
         })
     }).catch(() => {
         return res.status(400).json({
@@ -56,6 +58,7 @@ app.get("/cidades", async (req, res) => {
 });
 
 
+/*
 app.get("/cid/:id", async (req, res) => {
     const { id } = req.params;
 
@@ -129,8 +132,8 @@ app.delete("/cidade/:id", async (req, res) => {
         });
 });
 
-
-app.listen(8080, () =>{
+*/
+app.listen(8082, () =>{
     console.log("Tudo ok");
 });
 
